@@ -335,7 +335,6 @@ def main():
     torrent_root = '/path/to/old/torrents'  # FIXME: don't hardcode this
     print('looking for torrents in %s' % torrent_root)
     torrents = find_flac_torrents(torrent_root)
-    torrents = torrents[800:]
     for torrent in torrents:
         process_torrent(torrent_root, torrent, api, tracker_root, add_cmd)
 
