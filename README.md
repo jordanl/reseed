@@ -21,6 +21,8 @@ In this mode,
 the torrent is moved to the new tracker directory
 and its files are renamed to match any spelling changes in the new torrent.
 
+**NB:**  This code is a work in progress and only migration mode is working
+
 # Cross-seeding
 
 Cross-seeding is used when sharing content between trackers,
