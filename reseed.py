@@ -290,15 +290,22 @@ def build_default_config(config, filename):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-    section = 'tracker'
+
+    section = 'source'
     config.add_section(section)
+    config.set(section, 'path', '/path/to/old/torrents')
+
+    section = 'target'
+    config.add_section(section)
+    config.set(section, 'path', '/where/to/put/new/torrents')
     config.set(section, 'url', 'https://passtheheadphones.me/')
     config.set(section, 'username', '')
     config.set(section, 'password', '')
-    config.set(section, 'path', '/path/to/torrents/passtheheadphones')
+
     section = 'user-agent'
     config.add_section(section)
     config.set(section, 'add', 'transmission-remote --add "{0}"')
+
     config.write(open(filename, 'w'))
     print('Please edit the configuration file "%s"' % filename)
 
@@ -313,22 +320,23 @@ def main():
         '--config',
         help='the location of the configuration file',
         default=os.path.expanduser('~/.reseed/config'))
-    parser.add_argument(
-        'torrentdir',
-        nargs='?',
-        help='location of the old torrents',
-        default=os.getcwd())
     args = parser.parse_args()
 
     # read the config file
     config = configparser.SafeConfigParser()
     try:
         config.readfp(open(args.config))
-        username = config.get('tracker', 'username')
-        password = config.get('tracker', 'password')
-        url = config.get('tracker', 'url')
-        tracker_root = config.get('tracker', 'path')
-        add_cmd = config.get('user-agent', 'add')
+        section = 'source'
+        torrent_root = config.get(section, 'path')
+
+        section = 'target'
+        tracker_root = config.get(section, 'path')
+        username = config.get(section, 'username')
+        password = config.get(section, 'password')
+        url = config.get(section, 'url')
+
+        section = 'user-agent'
+        add_cmd = config.get(section, 'add')
     except:
         build_default_config(config, args.config)
         sys.exit(2)
@@ -336,7 +344,6 @@ def main():
     print('logging in')
     api = gazelle.Gazelle(url, username, password)
 
-    torrent_root = args.torrentdir
     print('looking for torrents in %s' % torrent_root)
     torrents = find_flac_torrents(torrent_root)
     for torrent in torrents:
