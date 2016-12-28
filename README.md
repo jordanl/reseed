@@ -12,7 +12,7 @@ It handles renamed files and folders,
 e.g. if the uploader added edition information to the folder
 or renamed "Foo For Bar.flac" as "Foo for Bar.flac".
 
-# Migration
+## Migration
 
 Migration mode is used when moving content over from one tracker to another,
 e.g. from What to PTH.
@@ -23,7 +23,7 @@ and its files are renamed to match any spelling changes in the new torrent.
 
 **NB:**  This code is a work in progress and only migration mode is working
 
-# Cross-seeding
+## Cross-seeding
 
 Cross-seeding is used when sharing content between trackers,
 such as sharing between PTH and APL.
@@ -32,6 +32,6 @@ In this mode, the original torrent is left untouched.
 Symlinks are added to the new tracker directory.
 This way spelling changes can be handled without duplicating files.
 
-# Examples
+## Examples
 
 FIXME
