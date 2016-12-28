@@ -7,6 +7,7 @@ import html
 import os
 import re
 import subprocess
+import string
 import sys
 import tempfile
 
@@ -222,7 +223,7 @@ def add_torrent_from_id(id, api, add_cmd):
     fd, fname = tempfile.mkstemp()
     os.write(fd, torrent_file)
     os.close(fd)
-    cmd = add_cmd.format(fname)
+    cmd = add_cmd.format(torrent=fname)
     print('$ ' + cmd)
     if not dry_run:
         os.system(cmd)
@@ -304,7 +305,7 @@ def build_default_config(config, filename):
 
     section = 'user-agent'
     config.add_section(section)
-    config.set(section, 'add', 'transmission-remote --add "{0}"')
+    config.set(section, 'add', 'transmission-remote --add "$torrent" --start-paused --download-dir "$dir"')
 
     config.write(open(filename, 'w'))
     print('Please edit the configuration file "%s"' % filename)
@@ -337,6 +338,7 @@ def main():
 
         section = 'user-agent'
         add_cmd = config.get(section, 'add')
+        add_cmd = string.Template(add_cmd).safe_substitute({'dir': tracker_root})
     except:
         build_default_config(config, args.config)
         sys.exit(2)
