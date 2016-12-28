@@ -299,8 +299,8 @@ def build_default_config(config, filename):
     section = 'user-agent'
     config.add_section(section)
     config.set(section, 'add', 'transmission-remote --add "{0}"')
-    config.write(open(args.config, 'w'))
-    print('Please edit the configuration file: %s' % [args.config])
+    config.write(open(filename, 'w'))
+    print('Please edit the configuration file "%s"' % filename)
 
 
 def main():
@@ -313,13 +313,17 @@ def main():
         '--config',
         help='the location of the configuration file',
         default=os.path.expanduser('~/.reseed/config'))
+    parser.add_argument(
+        'torrentdir',
+        nargs='?',
+        help='location of the old torrents',
+        default=os.getcwd())
     args = parser.parse_args()
 
     # read the config file
     config = configparser.SafeConfigParser()
     try:
-        open(args.config)
-        config.read(args.config)
+        config.readfp(open(args.config))
         username = config.get('tracker', 'username')
         password = config.get('tracker', 'password')
         url = config.get('tracker', 'url')
@@ -332,7 +336,7 @@ def main():
     print('logging in')
     api = gazelle.Gazelle(url, username, password)
 
-    torrent_root = '/path/to/old/torrents'  # FIXME: don't hardcode this
+    torrent_root = args.torrentdir
     print('looking for torrents in %s' % torrent_root)
     torrents = find_flac_torrents(torrent_root)
     for torrent in torrents:
