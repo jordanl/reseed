@@ -248,9 +248,8 @@ def parse_filelist(str):
     return filelist
 
 
-def find_match(torrent_root, folder, api):
+def find_match(torrent_path, api):
 
-    torrent_path = os.path.join(torrent_root, folder)
     print(torrent_path)
 
     for query in build_search_queries(torrent_path):
@@ -273,10 +272,10 @@ def find_match(torrent_root, folder, api):
     return False, '', '', {}
 
 
-def process_torrent(torrent_root, folder, api, tracker_root, add_cmd):
-    match, torrentid, filepath, filemap = find_match(torrent_root, folder, api)
+def process_torrent(torrent_path, api, tracker_root, add_cmd):
+    match, torrentid, filepath, filemap = find_match(torrent_path, api)
     if match:
-        src = os.path.join(torrent_root, folder)
+        src = torrent_path
         tgt = os.path.join(tracker_root, filepath)
         move_torrent(src, tgt, filemap)
         add_torrent_from_id(torrentid, api, add_cmd)
@@ -347,9 +346,10 @@ def main():
     api = gazelle.Gazelle(url, username, password)
 
     print('looking for torrents in %s' % torrent_root)
-    torrents = find_flac_torrents(torrent_root)
-    for torrent in torrents:
-        process_torrent(torrent_root, torrent, api, tracker_root, add_cmd)
+    folders = find_flac_torrents(torrent_root)
+    for f in folders:
+        torrent_path = os.path.join(torrent_root, f)
+        process_torrent(torrent_path, api, tracker_root, add_cmd)
 
     api.logout()
 
