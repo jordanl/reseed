@@ -226,7 +226,7 @@ def add_torrent_from_id(id, api, add_cmd):
     fd, fname = tempfile.mkstemp()
     os.write(fd, torrent_file)
     os.close(fd)
-    cmd = add_cmd.format(torrent=fname)
+    cmd = string.Template(add_cmd).safe_substitute({'torrent': fname})
     print('$ ' + cmd)
     if not dry_run:
         os.system(cmd)
