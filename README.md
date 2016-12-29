@@ -1,16 +1,17 @@
 # reseed
 
-A tool for seeding torrents across gazelle trackers, such as
-migrating from What to PTH or cross-seeding between PTH and APL.
+A tool for seeding torrents across gazelle trackers,
+such as migrating from What to PTH
+or cross-seeding between PTH and APL.
 
-When given a tracker and a local directory full of torrents,
-it will look for a tracker match for each torrent.
-If a match is found,
-it re-adds it to your torrent client for reseeding on the new tracker.
+When given a local directory full of torrents and a tracker,
+it will try to find a match for each torrent on the tracker.
+If a match is found, it downloads corresponding .torrent file
+and re-adds it to your torrent client for reseeding.
 
 It handles renamed files and folders,
-e.g. if the uploader added edition information to the folder
-or renamed "Foo For Bar.flac" as "Foo for Bar.flac".
+e.g. uploader added edition information in the folder
+or renamed `Foo For Bar.flac` as `Foo for Bar.flac`.
 
 ## Migration
 
