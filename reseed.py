@@ -63,7 +63,9 @@ def build_search_queries(path):
                 album = get_metaflac_tag(path, 'ALBUM')
                 artist = get_metaflac_tag(path, 'ARTIST')
                 if album and artist:
-                    query = {'searchstr': album, 'artistname': artist, 'format': 'FLAC'}
+                    query = {'searchstr': album,
+                             'artistname': artist,
+                             'format': 'FLAC'}
                     query_str = str(query)
                     if query_str not in query_strs:
                         queries.append(query)
@@ -313,7 +315,11 @@ def build_default_config(config, filename):
 
     section = 'user-agent'
     config.add_section(section)
-    config.set(section, 'add', 'transmission-remote --add "$torrent" --start-paused --download-dir "$dir"')
+    config.set(section, 'add',
+               ' '.join(['transmission-remote',
+                         '--add', '"$torrent"',
+                         '--start-paused',
+                         '--download-dir', '"$dir"']))
 
     config.write(open(filename, 'w'))
     print('Please edit the configuration file "%s"' % filename)
@@ -346,7 +352,8 @@ def main():
 
         section = 'user-agent'
         add_cmd = config.get(section, 'add')
-        add_cmd = string.Template(add_cmd).safe_substitute({'dir': tracker_root})
+        d = {'dir': tracker_root}
+        add_cmd = string.Template(add_cmd).safe_substitute(d)
     except:
         build_default_config(config, args.config)
         sys.exit(2)
