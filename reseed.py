@@ -72,6 +72,12 @@ def build_search_queries(path):
                 # TODO:
                 pass
 
+    # don't return too many:
+    # VA compilations spam with redundant searches
+    max_queries = 5
+    if len(queries) > max_queries:
+        queries = queries[:max_queries]
+
     return queries
 
 ##
