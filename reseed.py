@@ -102,8 +102,8 @@ def file_size_is_close(n1, n2):
     if not n1 or not n2:
         return n1 == n2
     percent_diff = diff / min(n1, n2)
-    print('n1==%s, n2==%s' % (n1, n2))
-    return percent_diff < 0.05
+    threshold = 0.025
+    return percent_diff < threshold
 
 
 def get_prefix_and_suffix(s):
