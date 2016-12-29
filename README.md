@@ -9,9 +9,10 @@ it will try to find a match for each torrent on the tracker.
 If a match is found, it downloads corresponding .torrent file
 and re-adds it to your torrent client for reseeding.
 
-It handles renamed files and folders,
-e.g. uploader added edition information in the folder
-or renamed `Foo For Bar.flac` as `Foo for Bar.flac`.
+If the uploader has changed the filenames on the new tracker;
+e.g. if your torrent has
+`Foo For Bar.flac` but the tracker is looking for
+`Foo for Bar.flac`, this tool will handle that.
 
 ## Migration
 
