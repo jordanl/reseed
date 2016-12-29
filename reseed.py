@@ -53,9 +53,18 @@ def get_metaflac_tag(path, tag):
     return sanitize_tag(key)
 
 
+def has_log(path):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith('.log'):
+                return True
+    return False
+
+
 def build_search_queries(path):
     queries = []
     query_strs = []
+    log = has_log(path)
     for root, dirs, files in os.walk(path):
         for name in files:
             if name.endswith('.flac'):
@@ -65,6 +74,7 @@ def build_search_queries(path):
                 if album and artist:
                     query = {'searchstr': album,
                              'artistname': artist,
+                             'hasLog': log,
                              'format': 'FLAC'}
                     query_str = str(query)
                     if query_str not in query_strs:
