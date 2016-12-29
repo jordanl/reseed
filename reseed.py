@@ -11,6 +11,9 @@ import string
 import sys
 import tempfile
 
+# WARNING untested
+cross_seeding = False
+
 dry_run = False
 
 ##
@@ -272,12 +275,12 @@ def find_match(torrent_path, api):
     return False, '', '', {}
 
 
-def process_torrent(torrent_path, api, tracker_root, add_cmd):
+def process_torrent(torrent_path, api, tracker_root, action_func, add_cmd):
     match, torrentid, filepath, filemap = find_match(torrent_path, api)
     if match:
         src = torrent_path
         tgt = os.path.join(tracker_root, filepath)
-        move_torrent(src, tgt, filemap)
+        action_func(src, tgt, filemap)
         add_torrent_from_id(torrentid, api, add_cmd)
 
 
@@ -342,6 +345,11 @@ def main():
         build_default_config(config, args.config)
         sys.exit(2)
 
+    if cross_seeding:
+        action_func = link_torrent
+    else:
+        action_func = move_torrent
+
     print('logging in')
     api = gazelle.Gazelle(url, username, password)
 
@@ -349,7 +357,7 @@ def main():
     folders = find_flac_torrents(torrent_root)
     for f in folders:
         torrent_path = os.path.join(torrent_root, f)
-        process_torrent(torrent_path, api, tracker_root, add_cmd)
+        process_torrent(torrent_path, api, tracker_root, action_func, add_cmd)
 
     api.logout()
 
