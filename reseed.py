@@ -63,7 +63,7 @@ def build_search_queries(path):
                 album = get_metaflac_tag(path, 'ALBUM')
                 artist = get_metaflac_tag(path, 'ARTIST')
                 if album and artist:
-                    query = {'searchstr': album, 'artistname': artist}
+                    query = {'searchstr': album, 'artistname': artist, 'format': 'FLAC'}
                     query_str = str(query)
                     if query_str not in query_strs:
                         queries.append(query)
