@@ -97,15 +97,6 @@ def build_search_queries(path):
 ##
 
 
-def file_size_is_close(n1, n2):
-    diff = abs(n1-n2)
-    if not n1 or not n2:
-        return n1 == n2
-    percent_diff = diff / min(n1, n2)
-    threshold = 0.025
-    return percent_diff < threshold
-
-
 def get_prefix_and_suffix(s):
     suffix = None
     pos = s.rfind('.')
@@ -128,12 +119,6 @@ def find_matching_file(path, fname, fsize):
         s = os.path.getsize(candidate)
         if s == fsize:
             print('perfect match: ' + fname)
-            return fname
-
-        # maybe someone tweaked the metainfo.
-        # see if the torrent size is close
-        if file_size_is_close(s, fsize):
-            print('near match: ' + fname)
             return fname
 
     candidates = []
