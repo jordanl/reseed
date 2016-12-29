@@ -121,9 +121,10 @@ def get_prefix_and_suffix(s):
 
 def find_matching_file(path, fname, fsize):
 
-    # look for an easy match first
     candidate = os.path.join(path, fname)
     if os.path.isfile(candidate):
+
+        # look for an easy match first
         s = os.path.getsize(candidate)
         if s == fsize:
             print('perfect match: ' + fname)
@@ -131,9 +132,9 @@ def find_matching_file(path, fname, fsize):
 
         # maybe someone tweaked the metainfo.
         # see if the torrent size is close
-        # if file_size_is_close(s, fsize):
-        #    print('near match: ' + fname)
-        #    return fname
+        if file_size_is_close(s, fsize):
+            print('near match: ' + fname)
+            return fname
 
     candidates = []
     for root, dirs, files in os.walk(path):
